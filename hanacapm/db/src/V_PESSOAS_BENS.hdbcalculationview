@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="V_PESSOAS_BENS" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="true">
+<descriptions defaultDescription="V_PESSOAS_BENS"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="DB_PESSOA">
+    <resourceUri>DB_PESSOA</resourceUri>
+  </DataSource>
+  <DataSource id="DB_BENS">
+    <resourceUri>DB_BENS</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Pessoa">
+    <viewAttributes>
+      <viewAttribute id="CPF"/>
+      <viewAttribute id="NOME"/>
+      <viewAttribute id="DTNASCIMENTO"/>
+      <viewAttribute id="CIDADE"/>
+    </viewAttributes>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="IDADE" datatype="NVARCHAR" length="13" expressionLanguage="SQL">
+        <formula>YEARS_BETWEEN(&quot;DTNASCIMENTO&quot;, NOW())</formula>
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
+    <input node="DB_PESSOA"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Bens">
+    <viewAttributes>
+      <viewAttribute id="SERIAL"/>
+      <viewAttribute id="CPF"/>
+      <viewAttribute id="NOME"/>
+      <viewAttribute id="MARCA"/>
+      <viewAttribute id="INFORMACOES"/>
+      <viewAttribute id="DTCOMPRA"/>
+      <viewAttribute id="VALOR"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="DB_BENS"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="Relatório" cardinality="C1_N" joinType="leftOuter">
+    <viewAttributes>
+      <viewAttribute id="CPF"/>
+      <viewAttribute id="NOME"/>
+      <viewAttribute id="CIDADE"/>
+      <viewAttribute id="DTNASCIMENTO"/>
+      <viewAttribute id="IDADE"/>
+      <viewAttribute id="SERIAL"/>
+      <viewAttribute id="NOME_1"/>
+      <viewAttribute id="MARCA"/>
+      <viewAttribute id="INFORMACOES"/>
+      <viewAttribute id="DTCOMPRA"/>
+      <viewAttribute id="VALOR"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="Pessoa">
+      <mapping xsi:type="Calculation:AttributeMapping" target="CPF" source="CPF"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="NOME" source="NOME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CIDADE" source="CIDADE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DTNASCIMENTO" source="DTNASCIMENTO"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="IDADE" source="IDADE"/>
+    </input>
+    <input node="Bens">
+      <mapping xsi:type="Calculation:AttributeMapping" target="SERIAL" source="SERIAL"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="NOME_1" source="NOME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="MARCA" source="MARCA"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="INFORMACOES" source="INFORMACOES"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DTCOMPRA" source="DTCOMPRA"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="VALOR" source="VALOR"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CPF" source="CPF"/>
+    </input>
+    <joinAttribute name="CPF"/>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="Relatório">
+  <attributes>
+    <attribute id="CPF" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="CPF"/>
+      <keyMapping columnObjectName="Relatório" columnName="CPF"/>
+    </attribute>
+    <attribute id="NOME" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="NOME"/>
+      <keyMapping columnObjectName="Relatório" columnName="NOME"/>
+    </attribute>
+    <attribute id="CIDADE" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="CIDADE"/>
+      <keyMapping columnObjectName="Relatório" columnName="CIDADE"/>
+    </attribute>
+    <attribute id="DTNASCIMENTO" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="DTNASCIMENTO"/>
+      <keyMapping columnObjectName="Relatório" columnName="DTNASCIMENTO"/>
+    </attribute>
+    <attribute id="IDADE" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="IDADE"/>
+      <keyMapping columnObjectName="Relatório" columnName="IDADE"/>
+    </attribute>
+    <attribute id="SERIAL" order="6" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="SERIAL"/>
+      <keyMapping columnObjectName="Relatório" columnName="SERIAL"/>
+    </attribute>
+    <attribute id="NOME_1" order="7" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="NOME"/>
+      <keyMapping columnObjectName="Relatório" columnName="NOME_1"/>
+    </attribute>
+    <attribute id="MARCA" order="8" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="MARCA"/>
+      <keyMapping columnObjectName="Relatório" columnName="MARCA"/>
+    </attribute>
+    <attribute id="INFORMACOES" order="9" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="INFORMACOES"/>
+      <keyMapping columnObjectName="Relatório" columnName="INFORMACOES"/>
+    </attribute>
+    <attribute id="DTCOMPRA" order="10" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="DTCOMPRA"/>
+      <keyMapping columnObjectName="Relatório" columnName="DTCOMPRA"/>
+    </attribute>
+    <attribute id="VALOR" order="11" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="VALOR"/>
+      <keyMapping columnObjectName="Relatório" columnName="VALOR"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+    
+  
+    <shape expanded="true" modelObjectName="Pessoa" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="-60" y="403"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Bens" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="260" y="403"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Relatório" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="100" y="235"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="Pessoa" modelObjectNameSpace="Relatório" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="106"/>
+    </shape>
+    <shape modelObjectName="Bens" modelObjectNameSpace="Relatório" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="100"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

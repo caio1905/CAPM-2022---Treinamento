@@ -1,0 +1,42 @@
+{
+    "xsappname": "hanacapm",
+    "tenant-mode": "dedicated",
+    "scopes": [
+        {
+            "name": "UAA.User",
+            "description": "UAA"
+        },
+        {
+            "name": "$XSAPPNAME.Admin",
+            "description": "Normal User"
+        }
+    ],
+    "role-templates": [
+        {
+            "name": "Token_Exchange",
+            "description": "UAA Token Exchange",
+            "scope-references": [
+                "UAA.User"
+            ]
+        },
+        {
+            "name": "User",
+            "description": "Normal User",
+            "scope-references": [
+                "$XSAPPNAME.Admin"
+            ]
+        }
+    ],
+    "role-collections": [
+        {
+            "name": "hanacapm-user",
+            "description": "User access",
+            "role-template-references": [
+                "$XSAPPNAME.Admin"
+            ]
+        }
+    ],
+    "oauth2-configuration": {
+        "token-validity": 3600
+    }
+}

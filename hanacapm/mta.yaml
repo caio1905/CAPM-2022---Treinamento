@@ -1,0 +1,67 @@
+---
+_schema-version: '3.1'
+ID: hanacapm
+version: 1.0.0
+description: "A simple CAP project."
+parameters:
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm install --production
+        - npx -p @sap/cds-dk cds build --production
+
+modules:
+  - name: hanacapm-srv
+    type: nodejs
+    path: srv #gen/srv
+    parameters:
+      buildpack: nodejs_buildpack
+    provides:
+      - name: srv-api # required by consumers of CAP services (e.g. approuter)
+        properties:
+          srv-url: ${default-url}
+    requires:
+      - name: hanacapm-db
+      - name: hanacapm-uaa
+  - name: app
+    type: approuter.nodejs
+    path: app
+    parameters:
+      memory: 256M
+      disk-quota: 1024M
+    requires:
+      - name: hanacapm-uaa
+      - name: srv-api
+        group: destinations
+        properties:
+          name: srv_api
+          url: '~{srv-url}'
+          timeout: 60000
+          forwardAuthToken: true 
+
+  - name: hanacapm-db-deployer
+    type: hdb
+    path: db #gen/db
+    parameters:
+      buildpack: nodejs_buildpack
+    requires:
+      - name: hanacapm-db
+
+resources:
+  - name: hanacapm-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana # or 'hanatrial' on trial landscapes
+      service-plan: hdi-shared
+    properties:
+      hdi-service-name: ${service-name}
+# Service UAA
+  - name: hanacapm-uaa
+    type: org.cloudfoundry.managed-service
+    parameters:
+     service: xsuaa
+     service-plan: application
+     path: ./xs-security.json
+

@@ -1,0 +1,12 @@
+{ 
+    "authenticationMethod": "route",
+    "routes": [
+        {
+            "source": "^/(.*)$",
+            "authenticationType": "xsuaa",
+            "scope": ["$XSAPPNAME.Admin", "UAA.User"],
+            "csrfProtection": true,
+            "destination": "srv_api"
+        }
+    ]
+}
